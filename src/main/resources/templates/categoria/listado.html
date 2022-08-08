@@ -1,4 +1,4 @@
-<html>
+<html xmlns:sec="http://thymeleaf.org/extras/spring-security">
     <head>
         <title>techshop</title>
         <meta charset="UTF-8">
@@ -9,7 +9,8 @@
         <header th:replace="layout/plantilla :: header"></header>
         <div class="contenido">
             <h2>Listado de Categorias</h2>
-            <a th:href="@{categoria/nuevo}">Nuevo categoria</a>
+            <a th:href="@{categoria/nuevo}"
+               sec:authorize="hasrole('ROLE_ADMIN')">Nuevo categoria</a>
             <br>
             <br>
             <div th:if="${categorias != null and !categorias.empty}">
@@ -18,8 +19,8 @@
                         <tr>
                             <th>Descripcion</th> 
                             <th>Activo</th> 
-                            <th>Modificar</th>
-                            <th>Eliminar</th>
+                            <th sec:authorize="hasrole('ROLE_ADMIN')">Modificar</th>
+                            <th sec:authorize="hasrole('ROLE_ADMIN')">Eliminar</th>
                             
                         </tr>
                     </thead>
@@ -27,8 +28,8 @@
                         <tr th:each="item : ${categorias}">
                             <td th:text="${item.descripcion}"></td>
                             <td><input type="checkbox" name="activo" th:checked="${item.activo}" disabled="true"/> </td>
-                            <td><a th:href="@{/categoria/modificar/} + ${item.idCategoria}">Modificar</a></td>
-                            <td><a th:href="@{/categoria/eliminar/} + ${item.idCategoria}">Eliminar</a></td>
+                            <td sec:authorize="hasrole('ROLE_ADMIN')"><a th:href="@{/categoria/modificar/} + ${item.idCategoria}">Modificar</a></td>
+                            <td sec:authorize="hasrole('ROLE_ADMIN')"><a th:href="@{/categoria/eliminar/} + ${item.idCategoria}">Eliminar</a></td>
                         </tr>
                     </tbody>
                 </table>
